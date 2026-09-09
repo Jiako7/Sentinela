@@ -241,6 +241,7 @@
     <main class="container">
 
         <div class="cabecalho">
+
             <div class="icone">
                 🏥
             </div>
@@ -250,12 +251,14 @@
             <p class="subtitulo">
                 Acesse sua área de atendimento
             </p>
+
         </div>
 
 
         <form class="formulario" onsubmit="login(event)">
 
             <div class="campo">
+
                 <label for="usuario">
                     Usuário
                 </label>
@@ -266,10 +269,12 @@
                     placeholder="Digite seu usuário"
                     autocomplete="username"
                     required>
+
             </div>
 
 
             <div class="campo">
+
                 <label for="senha">
                     Senha
                 </label>
@@ -280,6 +285,7 @@
                     placeholder="Digite sua senha"
                     autocomplete="current-password"
                     required>
+
             </div>
 
 
@@ -339,7 +345,11 @@
 
 
             if (!usuario || !senha) {
-                mostrarErro("Preencha usuário e senha.");
+
+                mostrarErro(
+                    "Preencha usuário e senha."
+                );
+
                 return;
             }
 
@@ -350,8 +360,13 @@
 
             try {
 
+                /*
+                 * ALTERAÇÃO PRINCIPAL:
+                 * A requisição agora usa a mesma origem
+                 * do servidor Express.
+                 */
                 const resposta = await fetch(
-                    "http://localhost:3000/login",
+                    "/login",
                     {
                         method: "POST",
 
@@ -370,27 +385,43 @@
                 const data = await resposta.json();
 
 
+                if (!resposta.ok) {
+
+                    mostrarErro(
+                        data.erro ||
+                        "Usuário ou senha inválidos."
+                    );
+
+                    return;
+                }
+
+
                 if (data.tipo === "triagem") {
+
                     location.href = "triagem.html";
+
                     return;
                 }
 
 
                 if (data.tipo === "medico") {
+
                     location.href = "medico.html";
+
                     return;
                 }
 
 
                 if (data.tipo === "atendimento") {
+
                     location.href = "atendimento.html";
+
                     return;
                 }
 
 
                 mostrarErro(
-                    data.mensagem ||
-                    "Usuário ou senha inválidos."
+                    "Tipo de usuário não reconhecido."
                 );
 
 
