@@ -1,198 +1,1410 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    .btn-tv {
-      background: #28a745;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      margin-top: 8px;
-    }
-    .btn-tv:hover { background: #1e7e34; }
-    .btn-abrir-tv {
-      background: #17a2b8;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 5px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .btn-abrir-tv:hover { background: #117a8b; }
-    .consultorio-input {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-      background: #f0f4ff;
-      padding: 10px 14px;
-      border-radius: 6px;
-      border: 1px solid #d0d8f0;
-    }
-    .consultorio-input label { font-weight: bold; }
-    .consultorio-input input {
-      width: 60px;
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      padding: 4px 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Painel Médico</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eef1f5;
+            color: #1f2937;
+        }
+
+        .pagina {
+            width: 100%;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 25px;
+        }
+
+        /* =========================
+           CABEÇALHO
+        ========================= */
+
+        .cabecalho {
+            background: white;
+            border-radius: 14px;
+            padding: 22px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 4px solid #2563eb;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .cabecalho h1 {
+            margin: 0;
+            font-size: 25px;
+            color: #1e3a8a;
+        }
+
+        .cabecalho p {
+            margin: 6px 0 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .acoes-topo {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-tv,
+        .btn-alta {
+            border: none;
+            border-radius: 8px;
+            padding: 11px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-tv {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-tv:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-alta {
+            background: #0f766e;
+            color: white;
+        }
+
+        .btn-alta:hover {
+            background: #115e59;
+        }
+
+        /* =========================
+           CONSULTÓRIO
+        ========================= */
+
+        .consultorio {
+            background: white;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .consultorio label {
+            font-weight: bold;
+        }
+
+        .consultorio input {
+            width: 80px;
+            padding: 9px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .conteudo {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .card-painel {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+        }
+
+        .titulo-painel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .titulo-painel h2 {
+            margin: 0;
+            font-size: 19px;
+            color: #1e3a8a;
+        }
+
+        .titulo-painel span {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* =========================
+           CARDS DOS PACIENTES
+        ========================= */
+
+        .paciente-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 11px;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: #fafafa;
+            transition: 0.2s;
+        }
+
+        .paciente-card:hover {
+            border-color: #93c5fd;
+            box-shadow: 0 3px 10px rgba(37,99,235,0.08);
+        }
+
+        .paciente-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .paciente-nome {
+            font-size: 17px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        /* NOVO: prontuário */
+
+        .prontuario {
+            margin-top: 5px;
+            color: #4b5563;
+            font-size: 13px;
+        }
+
+        .prontuario strong {
+            color: #1e3a8a;
+        }
+
+        .risco {
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .risco.baixo {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .risco.medio {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .risco.alto {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .paciente-dados {
+            display: grid;
+            gap: 7px;
+            font-size: 13px;
+            color: #4b5563;
+        }
+
+        .paciente-dados strong {
+            color: #374151;
+        }
+
+        .alergia {
+            margin-top: 9px;
+            padding: 9px;
+            border-radius: 7px;
+            background: #fff7ed;
+            color: #9a3412;
+            font-size: 13px;
+        }
+
+        .acoes-paciente {
+            display: flex;
+            gap: 8px;
+            margin-top: 13px;
+        }
+
+        .btn-atender,
+        .btn-chamar {
+            border: none;
+            border-radius: 7px;
+            padding: 9px 13px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .btn-atender {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-atender:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-chamar {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-chamar:hover {
+            background: #d1d5db;
+        }
+
+        .fila-vazia {
+            padding: 35px 15px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* =========================
+           FORMULÁRIO
+        ========================= */
+
+        .formulario {
+            display: grid;
+            gap: 15px;
+        }
+
+        .campo {
+            display: grid;
+            gap: 7px;
+        }
+
+        .campo label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .campo input,
+        .campo select,
+        .campo textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+        .campo input:focus,
+        .campo select:focus,
+        .campo textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37,99,235,0.10);
+        }
+
+        .campo textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .campo-duplo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .paciente-selecionado {
+            background: #eff6ff !important;
+            border-color: #60a5fa !important;
+            color: #1e3a8a;
+            font-weight: bold;
+        }
+
+        /* NOVO: prontuário no formulário */
+
+        .prontuario-selecionado {
+            background: #f8fafc;
+            border: 1px solid #dbe3ec;
+            border-radius: 8px;
+            padding: 11px 12px;
+            color: #1e3a8a;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .prontuario-selecionado span {
+            color: #374151;
+            font-weight: normal;
+            margin-right: 5px;
+        }
+
+        #alertaAlergia {
+            display: none;
+            padding: 12px;
+            border-radius: 8px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .btn-salvar {
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            padding: 13px;
+            background: #16a34a;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-salvar:hover {
+            background: #15803d;
+        }
+
+        .btn-salvar:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .status {
+            display: none;
+            padding: 11px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .status.sucesso {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status.erro {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* =========================
+           RESPONSIVO
+        ========================= */
+
+        @media (max-width: 900px) {
+            .conteudo {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .pagina {
+                padding: 12px;
+            }
+
+            .cabecalho {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .acoes-topo {
+                width: 100%;
+            }
+
+            .btn-tv,
+            .btn-alta {
+                flex: 1;
+            }
+
+            .campo-duplo {
+                grid-template-columns: 1fr;
+            }
+
+            .consultorio {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="pagina">
 
-  <!-- Cabeçalho com botão da TV -->
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <h2 style="margin:0;">🩺 Painel Médico</h2>
-    <button class="btn-abrir-tv" onclick="window.open('tv.html','_blank')">📺 Abrir Tela da TV</button>
-  </div>
+    <!-- =========================
+         CABEÇALHO
+    ========================== -->
 
-  <!-- Campo criado para informar o consultório e chamar o paciente na TV -->
-  <div class="consultorio-input">
-    <label>Meu Consultório:</label>
-    <input type="text" id="consultorio-num" value="01">
-    <span style="color:#666; font-size:13px;">Este número será exibido na TV ao chamar o paciente.</span>
-  </div>
+    <header class="cabecalho">
 
-  <div id="triagens"></div>
+        <div>
+            <h1>🩺 Painel Médico</h1>
+            <p>Gerenciamento de pacientes, consultas e atendimentos</p>
+        </div>
 
-  <hr>
+        <div class="acoes-topo">
 
-  <h3>Consulta</h3>
+            <button
+                class="btn-tv"
+                onclick="window.open('tv.html', '_blank')">
+                📺 Abrir TV
+            </button>
 
-  <input id="paciente" placeholder="Paciente" readonly>
-  <input id="diagnostico" placeholder="Diagnóstico">
+            <button
+                class="btn-alta"
+                onclick="window.location.href='alta.html'">
+                📄 Alta Médica
+            </button>
 
-  <select id="medicacao">
-    <option value="">Selecione a medicação</option>
-  </select>
+        </div>
 
-  <textarea id="obs" placeholder="Observações"></textarea>
+    </header>
 
-  <button onclick="salvar()">Salvar</button>
+
+    <!-- =========================
+         CONSULTÓRIO
+    ========================== -->
+
+    <section class="consultorio">
+
+        <label for="consultorio-num">
+            Consultório:
+        </label>
+
+        <input
+            type="text"
+            id="consultorio-num"
+            value="01"
+            maxlength="10">
+
+    </section>
+
+
+    <!-- =========================
+         CONTEÚDO
+    ========================== -->
+
+    <main class="conteudo">
+
+        <!-- =========================
+             FILA DE PACIENTES
+        ========================== -->
+
+        <section class="card-painel">
+
+            <div class="titulo-painel">
+                <h2>👥 Pacientes aguardando</h2>
+                <span>Atualização automática</span>
+            </div>
+
+            <div id="fila-pacientes"></div>
+
+        </section>
+
+
+        <!-- =========================
+             CONSULTA
+        ========================== -->
+
+        <section class="card-painel">
+
+            <div class="titulo-painel">
+                <h2>📝 Atendimento</h2>
+                <span>Registro da consulta</span>
+            </div>
+
+            <div class="formulario">
+
+                <!-- PACIENTE -->
+
+                <div class="campo">
+
+                    <label for="paciente">
+                        Paciente
+                    </label>
+
+                    <input
+                        type="text"
+                        id="paciente"
+                        readonly
+                        placeholder="Selecione um paciente">
+
+                </div>
+
+
+                <!-- PRONTUÁRIO -->
+
+                <div class="campo">
+
+                    <label>
+                        Prontuário
+                    </label>
+
+                    <div
+                        id="prontuario"
+                        class="prontuario-selecionado">
+                        <span>Prontuário:</span>
+                        Selecione um paciente
+                    </div>
+
+                </div>
+
+
+                <!-- ALERTA DE ALERGIA -->
+
+                <div id="alertaAlergia"></div>
+
+
+                <!-- DIAGNÓSTICO -->
+
+                <div class="campo">
+
+                    <label for="diagnostico">
+                        Diagnóstico
+                    </label>
+
+                    <input
+                        type="text"
+                        id="diagnostico"
+                        placeholder="Digite o diagnóstico">
+
+                </div>
+
+
+                <!-- MEDICAÇÃO -->
+
+                <div class="campo">
+
+                    <label for="medicacao">
+                        Medicação
+                    </label>
+
+                    <select id="medicacao">
+
+                        <option value="">
+                            Selecione uma medicação
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- OBSERVAÇÕES -->
+
+                <div class="campo">
+
+                    <label for="obs">
+                        Observações / Orientações
+                    </label>
+
+                    <textarea
+                        id="obs"
+                        placeholder="Digite observações, orientações ou informações adicionais"></textarea>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div
+                    id="status"
+                    class="status">
+                </div>
+
+
+                <!-- SALVAR -->
+
+                <button
+                    id="btnSalvar"
+                    class="btn-salvar"
+                    onclick="salvar()">
+
+                    💾 Salvar consulta
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </div>
 
+
 <script>
 
-let triagensCarregadas = [];
+    /* =========================================
+       VARIÁVEIS
+    ========================================= */
 
-function carregar() {
-  fetch("/triagens")
-    .then(r => r.json())
-    .then(data => {
-      triagensCarregadas = data;
+    let triagensCarregadas = [];
 
-      const div = document.getElementById("triagens");
-      div.innerHTML = "";
+    const pacienteInput = document.getElementById("paciente");
+    const prontuarioElement = document.getElementById("prontuario");
+    const diagnosticoInput = document.getElementById("diagnostico");
+    const medicacaoSelect = document.getElementById("medicacao");
+    const obsInput = document.getElementById("obs");
+    const filaPacientes = document.getElementById("fila-pacientes");
+    const alertaAlergia = document.getElementById("alertaAlergia");
+    const statusElement = document.getElementById("status");
+    const btnSalvar = document.getElementById("btnSalvar");
 
-      if (data.length === 0) {
-        div.innerHTML = "<p style='color:#888; text-align:center;'>Nenhum paciente na fila.</p>";
-        return;
-      }
 
-      data.forEach((t, index) => {
-        div.innerHTML += `
-          <div class="card">
-            <h3>${t.nome}</h3>
-            <p><b>Sintoma:</b> ${t.sintoma || "Não informado"}</p>
-            <p><b>Temperatura:</b> ${t.temperatura || "Não informada"}°C</p>
-            <p><span class="${t.risco}">${t.risco}</span></p>
-            <p><b>Alergia:</b> ${t.alergia || "Nenhuma"}</p>
-            <p><b>Observação:</b> ${t.observacao || "Nenhuma"}</p>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <button onclick="selecionar(${index})">Atender</button>
-              <button class="btn-tv" onclick="chamarNaTV('${t.nome}')">📺 Chamar na TV</button>
-            </div>
-          </div>
-        `;
-      });
-    });
-}
+    /* =========================================
+       ESCAPAR HTML
+    ========================================= */
 
-// Função criada para enviar o nome do paciente para a TV quando ele for chamado no consultório.
-function chamarNaTV(nome) {
-  const consultorio = document.getElementById("consultorio-num").value || "01";
-  fetch("/tv/chamar", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      localTipo: "CONSULTÓRIO",
-      localNumero: consultorio,
-      paciente: nome
-    })
-  })
-  .then(r => r.json())
-  .then(() => {
-    alert("✅ " + nome + " foi chamado na TV para o Consultório " + consultorio + "!");
-  });
-}
+    function escaparHTML(valor) {
 
-function selecionar(index) {
-  const t = triagensCarregadas[index];
-  document.getElementById("paciente").value = t.nome;
-  document.getElementById("obs").value = t.observacao || "";
+        if (valor === null || valor === undefined) {
+            return "";
+        }
 
-  if (t.alergia && t.alergia !== "Nenhuma") {
-    alert("⚠️ Paciente possui alergia: " + t.alergia);
-  }
-}
+        return String(valor)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
-function carregarMedicacoes() {
-  fetch("/lista-medicacoes")
-    .then(r => r.json())
-    .then(data => {
-      const select = document.getElementById("medicacao");
-      select.innerHTML = `<option value="">Selecione a medicação</option>`;
-      data.forEach(med => {
-        const option = document.createElement("option");
-        option.value = med;
-        option.textContent = med;
-        select.appendChild(option);
-      });
-    });
-}
 
-function salvar() {
-  const paciente = document.getElementById("paciente").value;
-  const diagnostico = document.getElementById("diagnostico").value;
-  const medicacao = document.getElementById("medicacao").value;
-  const obs = document.getElementById("obs").value;
+    /* =========================================
+       PEGAR PRONTUÁRIO
+       
+       Aceita diferentes nomes de propriedade
+       para facilitar a integração com o backend.
+    ========================================= */
 
-  if (!paciente) { alert("Selecione um paciente clicando em Atender."); return; }
-  if (!medicacao) { alert("Selecione uma medicação."); return; }
+    function obterProntuario(paciente) {
 
-  fetch("/consulta", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ paciente, diagnostico, medicacao, obs })
-  })
-  .then(r => r.json())
-  .then(() => {
-    alert("Consulta salva");
-    document.getElementById("diagnostico").value = "";
-    document.getElementById("medicacao").value = "";
-    document.getElementById("obs").value = "";
-  });
-}
+        if (!paciente) {
+            return "";
+        }
 
-carregar();
-carregarMedicacoes();
+        return (
+            paciente.prontuario ??
+            paciente.numero_prontuario ??
+            paciente.numeroProntuario ??
+            paciente.num_prontuario ??
+            paciente.numProntuario ??
+            paciente.id_prontuario ??
+            paciente.idProntuario ??
+            ""
+        );
 
-// Atualiza lista automaticamente a cada 10 segundos
-setInterval(carregar, 10000);
+    }
+
+
+    /* =========================================
+       CARREGAR TRIAGENS
+    ========================================= */
+
+    async function carregar() {
+
+        try {
+
+            const resposta = await fetch("/triagens");
+
+            if (!resposta.ok) {
+                throw new Error("Erro ao carregar pacientes.");
+            }
+
+            triagensCarregadas = await resposta.json();
+
+            renderizarTriagens();
+
+        } catch (erro) {
+
+            console.error("Erro ao carregar triagens:", erro);
+
+            filaPacientes.innerHTML = `
+                <div class="fila-vazia">
+                    Não foi possível carregar a fila de pacientes.
+                </div>
+            `;
+
+        }
+
+    }
+
+
+    /* =========================================
+       RENDERIZAR TRIAGENS
+    ========================================= */
+
+    function renderizarTriagens() {
+
+        if (!Array.isArray(triagensCarregadas) ||
+            triagensCarregadas.length === 0) {
+
+            filaPacientes.innerHTML = `
+                <div class="fila-vazia">
+                    Nenhum paciente aguardando atendimento.
+                </div>
+            `;
+
+            return;
+        }
+
+
+        filaPacientes.innerHTML = triagensCarregadas.map((t, index) => {
+
+            const prontuario = obterProntuario(t);
+
+            const risco = t.risco || "Não informado";
+
+            const riscoClasse =
+                String(risco)
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLowerCase();
+
+
+            return `
+
+                <div class="paciente-card">
+
+                    <div class="paciente-topo">
+
+                        <div>
+
+                            <div class="paciente-nome">
+                                ${escaparHTML(t.nome || "Paciente sem nome")}
+                            </div>
+
+                            <div class="prontuario">
+
+                                <strong>Prontuário:</strong>
+
+                                ${
+                                    prontuario
+                                        ? escaparHTML(prontuario)
+                                        : "Não informado"
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="risco ${escaparHTML(riscoClasse)}">
+
+                            ${escaparHTML(risco)}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="paciente-dados">
+
+                        <div>
+                            <strong>Sintoma:</strong>
+                            ${escaparHTML(t.sintoma || "Não informado")}
+                        </div>
+
+                        <div>
+                            <strong>Temperatura:</strong>
+                            ${escaparHTML(t.temperatura || "Não informada")}
+                        </div>
+
+                    </div>
+
+
+                    ${
+                        t.alergia
+                            ? `
+                                <div class="alergia">
+
+                                    ⚠️ <strong>Alergia:</strong>
+                                    ${escaparHTML(t.alergia)}
+
+                                </div>
+                              `
+                            : ""
+                    }
+
+
+                    ${
+                        t.observacao
+                            ? `
+                                <div class="paciente-dados"
+                                     style="margin-top:9px;">
+
+                                    <div>
+                                        <strong>Observação:</strong>
+                                        ${escaparHTML(t.observacao)}
+                                    </div>
+
+                                </div>
+                              `
+                            : ""
+                    }
+
+
+                    <div class="acoes-paciente">
+
+                        <button
+                            class="btn-atender"
+                            onclick="selecionar(${index})">
+
+                            Atender
+
+                        </button>
+
+
+                        <button
+                            class="btn-chamar"
+                            onclick="chamarNaTVPorIndice(${index})">
+
+                            📺 Chamar na TV
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+    }
+
+
+    /* =========================================
+       CHAMAR NA TV
+    ========================================= */
+
+    async function chamarNaTV(nome) {
+
+        const consultorio =
+            document.getElementById("consultorio-num").value.trim();
+
+
+        if (!consultorio) {
+
+            alert("Informe o número do consultório.");
+
+            return;
+        }
+
+
+        try {
+
+            const resposta = await fetch("/tv/chamar", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    localTipo: "CONSULTÓRIO",
+
+                    localNumero: consultorio,
+
+                    paciente: nome
+
+                })
+
+            });
+
+
+            if (!resposta.ok) {
+
+                throw new Error("Erro ao chamar paciente na TV.");
+
+            }
+
+
+            mostrarStatus(
+                "Paciente chamado na TV.",
+                "sucesso"
+            );
+
+
+        } catch (erro) {
+
+            console.error(erro);
+
+            mostrarStatus(
+                "Não foi possível chamar o paciente na TV.",
+                "erro"
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       CHAMAR NA TV POR ÍNDICE
+    ========================================= */
+
+    function chamarNaTVPorIndice(index) {
+
+        const paciente = triagensCarregadas[index];
+
+        if (!paciente) {
+            return;
+        }
+
+        chamarNaTV(paciente.nome);
+
+    }
+
+
+    /* =========================================
+       SELECIONAR PACIENTE
+    ========================================= */
+
+    function selecionar(index) {
+
+        const paciente = triagensCarregadas[index];
+
+        if (!paciente) {
+            return;
+        }
+
+
+        const nome =
+            paciente.nome || "Paciente sem nome";
+
+
+        const prontuario =
+            obterProntuario(paciente);
+
+
+        /* PACIENTE */
+
+        pacienteInput.value = nome;
+
+        pacienteInput.classList.add(
+            "paciente-selecionado"
+        );
+
+
+        /* PRONTUÁRIO */
+
+        if (prontuario) {
+
+            prontuarioElement.innerHTML = `
+                <span>Prontuário:</span>
+                ${escaparHTML(prontuario)}
+            `;
+
+        } else {
+
+            prontuarioElement.innerHTML = `
+                <span>Prontuário:</span>
+                Não informado
+            `;
+
+        }
+
+
+        /* ALERTA DE ALERGIA */
+
+        if (paciente.alergia) {
+
+            alertaAlergia.style.display = "block";
+
+            alertaAlergia.innerHTML = `
+                ⚠️ ATENÇÃO: paciente possui alergia a
+                <strong>${escaparHTML(paciente.alergia)}</strong>.
+            `;
+
+        } else {
+
+            alertaAlergia.style.display = "none";
+
+            alertaAlergia.innerHTML = "";
+
+        }
+
+
+        /* OBSERVAÇÃO DA TRIAGEM */
+
+        if (paciente.observacao) {
+
+            obsInput.value = paciente.observacao;
+
+        } else {
+
+            obsInput.value = "";
+
+        }
+
+
+        /* DIAGNÓSTICO */
+
+        diagnosticoInput.focus();
+
+    }
+
+
+    /* =========================================
+       CARREGAR MEDICAÇÕES
+    ========================================= */
+
+    async function carregarMedicacoes() {
+
+        try {
+
+            const resposta =
+                await fetch("/lista-medicacoes");
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    "Erro ao carregar medicações."
+                );
+
+            }
+
+
+            const medicacoes =
+                await resposta.json();
+
+
+            medicacaoSelect.innerHTML = `
+                <option value="">
+                    Selecione uma medicação
+                </option>
+            `;
+
+
+            if (Array.isArray(medicacoes)) {
+
+                medicacoes.forEach(medicacao => {
+
+                    /*
+                     * Aceita tanto strings quanto objetos.
+                     */
+
+                    let valor;
+                    let texto;
+
+                    if (typeof medicacao === "string") {
+
+                        valor = medicacao;
+                        texto = medicacao;
+
+                    } else {
+
+                        valor =
+                            medicacao.nome ??
+                            medicacao.medicacao ??
+                            medicacao.value ??
+                            "";
+
+                        texto =
+                            medicacao.nome ??
+                            medicacao.medicacao ??
+                            medicacao.value ??
+                            "";
+
+                    }
+
+
+                    if (!texto) {
+                        return;
+                    }
+
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value = valor;
+
+                    option.textContent = texto;
+
+                    medicacaoSelect.appendChild(option);
+
+                });
+
+            }
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao carregar medicações:",
+                erro
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       SALVAR CONSULTA
+    ========================================= */
+
+    async function salvar() {
+
+        const paciente =
+            pacienteInput.value.trim();
+
+
+        const diagnostico =
+            diagnosticoInput.value.trim();
+
+
+        const medicacao =
+            medicacaoSelect.value;
+
+
+        const obs =
+            obsInput.value.trim();
+
+
+        /*
+         * Descobre novamente o prontuário
+         * do paciente selecionado.
+         */
+
+        const pacienteSelecionado =
+            triagensCarregadas.find(
+                p => String(p.nome || "") === paciente
+            );
+
+
+        const prontuario =
+            obterProntuario(pacienteSelecionado);
+
+
+        /* VALIDAÇÕES */
+
+        if (!paciente) {
+
+            alert("Selecione um paciente.");
+
+            return;
+        }
+
+
+        if (!medicacao) {
+
+            alert("Selecione uma medicação.");
+
+            return;
+        }
+
+
+        /*
+         * O prontuário é importante para identificar
+         * corretamente o paciente.
+         */
+
+        if (!prontuario) {
+
+            const continuar =
+                confirm(
+                    "Este paciente não possui um número de prontuário informado. Deseja continuar mesmo assim?"
+                );
+
+
+            if (!continuar) {
+                return;
+            }
+
+        }
+
+
+        btnSalvar.disabled = true;
+
+        btnSalvar.textContent =
+            "Salvando...";
+
+
+        try {
+
+            const resposta =
+                await fetch("/consulta", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        /*
+                         * Mantidos os campos antigos
+                         */
+
+                        paciente: paciente,
+
+                        diagnostico: diagnostico,
+
+                        medicacao: medicacao,
+
+                        obs: obs,
+
+
+                        /*
+                         * NOVO CAMPO
+                         */
+
+                        prontuario: prontuario
+
+                    })
+
+                });
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    "Não foi possível salvar a consulta."
+                );
+
+            }
+
+
+            mostrarStatus(
+                "Consulta registrada com sucesso.",
+                "sucesso"
+            );
+
+
+            /* LIMPAR FORMULÁRIO */
+
+            pacienteInput.value = "";
+
+            pacienteInput.classList.remove(
+                "paciente-selecionado"
+            );
+
+
+            prontuarioElement.innerHTML = `
+                <span>Prontuário:</span>
+                Selecione um paciente
+            `;
+
+
+            alertaAlergia.style.display = "none";
+
+            alertaAlergia.innerHTML = "";
+
+
+            diagnosticoInput.value = "";
+
+            medicacaoSelect.value = "";
+
+            obsInput.value = "";
+
+
+            /*
+             * Atualiza a fila
+             */
+
+            await carregar();
+
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao salvar consulta:",
+                erro
+            );
+
+
+            mostrarStatus(
+                "Erro ao salvar a consulta.",
+                "erro"
+            );
+
+        } finally {
+
+            btnSalvar.disabled = false;
+
+            btnSalvar.textContent =
+                "💾 Salvar consulta";
+
+        }
+
+    }
+
+
+    /* =========================================
+       STATUS
+    ========================================= */
+
+    function mostrarStatus(mensagem, tipo) {
+
+        statusElement.textContent =
+            mensagem;
+
+        statusElement.className =
+            "status " + tipo;
+
+
+        setTimeout(() => {
+
+            statusElement.className =
+                "status";
+
+            statusElement.textContent = "";
+
+        }, 4000);
+
+    }
+
+
+    /* =========================================
+       INICIALIZAÇÃO
+    ========================================= */
+
+    carregar();
+
+    carregarMedicacoes();
+
+
+    /*
+     * Atualiza a fila a cada 10 segundos,
+     * mantendo o comportamento original.
+     */
+
+    setInterval(carregar, 10000);
 
 </script>
 
 </body>
 </html>
+```
