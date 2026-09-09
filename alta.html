@@ -1,0 +1,1726 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Alta Médica</title>
+
+    <!-- Biblioteca para geração de PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eef1f5;
+            color: #1f2937;
+            padding: 35px 20px;
+        }
+
+        /* =========================
+           CONTAINER PRINCIPAL
+        ========================= */
+
+        .pagina {
+            width: 210mm;
+            min-height: 297mm;
+            max-width: 100%;
+            margin: auto;
+            background: white;
+            padding: 18mm;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.10);
+            border-radius: 4px;
+        }
+
+
+        /* =========================
+           CABEÇALHO
+        ========================= */
+
+        .cabecalho {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding-bottom: 18px;
+            border-bottom: 2px solid #1d4ed8;
+
+            margin-bottom: 28px;
+        }
+
+        .logo-area h1 {
+            font-size: 25px;
+            color: #1d4ed8;
+            margin-bottom: 5px;
+        }
+
+        .logo-area p {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .documento {
+            text-align: right;
+        }
+
+        .documento strong {
+            display: block;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .documento span {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           TÍTULOS DAS SEÇÕES
+        ========================= */
+
+        .secao {
+            margin-bottom: 25px;
+        }
+
+        .titulo-secao {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 15px;
+            font-weight: bold;
+
+            color: #1d4ed8;
+
+            border-bottom: 1px solid #dbe3ef;
+
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+        }
+
+        .numero {
+            width: 25px;
+            height: 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #1d4ed8;
+            color: white;
+
+            border-radius: 50%;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           FORMULÁRIO
+        ========================= */
+
+        .linha {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .campo {
+            margin-bottom: 16px;
+        }
+
+        .campo label {
+            display: block;
+
+            font-size: 12px;
+            font-weight: bold;
+
+            color: #4b5563;
+
+            margin-bottom: 6px;
+        }
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 5px;
+
+            padding: 11px 12px;
+
+            font-size: 14px;
+
+            color: #1f2937;
+
+            outline: none;
+
+            background: white;
+
+            transition: 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            border-color: #2563eb;
+
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
+        }
+
+        textarea {
+
+            resize: vertical;
+
+            min-height: 120px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           MOTIVO
+        ========================= */
+
+        .motivo-box {
+
+            background: #f8fafc;
+
+            border: 1px solid #dbe3ef;
+
+            border-radius: 6px;
+
+            padding: 16px;
+        }
+
+
+        /* =========================
+           ASSINATURA
+        ========================= */
+
+        .assinatura-area {
+
+            margin-top: 10px;
+        }
+
+        #assinatura {
+
+            display: block;
+
+            width: 100%;
+
+            height: 170px;
+
+            border: 1px dashed #94a3b8;
+
+            border-radius: 6px;
+
+            background: #fafafa;
+
+            cursor: crosshair;
+
+            touch-action: none;
+        }
+
+        .assinatura-info {
+
+            font-size: 11px;
+
+            color: #64748b;
+
+            margin-top: 6px;
+        }
+
+
+        /* =========================
+           BOTÕES
+        ========================= */
+
+        .acoes {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 30px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #e5e7eb;
+        }
+
+        button {
+
+            border: none;
+
+            border-radius: 6px;
+
+            padding: 13px 20px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .btn-registrar {
+
+            flex: 1;
+
+            background: #1d4ed8;
+
+            color: white;
+        }
+
+        .btn-registrar:hover {
+
+            background: #1e40af;
+        }
+
+        .btn-pdf {
+
+            flex: 1;
+
+            background: #059669;
+
+            color: white;
+
+            display: none;
+        }
+
+        .btn-pdf:hover {
+
+            background: #047857;
+        }
+
+        .btn-limpar {
+
+            background: #e5e7eb;
+
+            color: #374151;
+        }
+
+        .btn-limpar:hover {
+
+            background: #d1d5db;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        #status {
+
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 12px;
+
+            border-radius: 6px;
+
+            background: #ecfdf5;
+
+            border: 1px solid #a7f3d0;
+
+            color: #047857;
+
+            font-size: 13px;
+
+            text-align: center;
+        }
+
+
+        /* =========================
+           RODAPÉ
+        ========================= */
+
+        .rodape {
+
+            margin-top: 35px;
+
+            padding-top: 12px;
+
+            border-top: 1px solid #e5e7eb;
+
+            text-align: center;
+
+            font-size: 10px;
+
+            color: #9ca3af;
+        }
+
+
+        /* =========================
+           RESPONSIVO
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .pagina {
+                padding: 25px 20px;
+                min-height: auto;
+            }
+
+            .linha {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .cabecalho {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .documento {
+                text-align: left;
+            }
+
+            .acoes {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+
+        /* =========================
+           IMPRESSÃO
+        ========================= */
+
+        @media print {
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .pagina {
+                width: 210mm;
+                min-height: 297mm;
+                box-shadow: none;
+                padding: 18mm;
+            }
+
+            .acoes,
+            #status {
+                display: none !important;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="pagina">
+
+        <!-- =========================
+             CABEÇALHO
+        ========================= -->
+
+        <header class="cabecalho">
+
+            <div class="logo-area">
+
+                <h1>ALTA MÉDICA</h1>
+
+                <p>
+                    Documento de alta e encerramento do atendimento
+                </p>
+
+            </div>
+
+            <div class="documento">
+
+                <strong>DOCUMENTO MÉDICO</strong>
+
+                <span>
+                    Registro de alta
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <form id="formAlta">
+
+
+            <!-- =========================
+                 PACIENTE
+            ========================= -->
+
+            <section class="secao">
+
+                <div class="titulo-secao">
+
+                    <span class="numero">1</span>
+
+                    DADOS DO PACIENTE
+
+                </div>
+
+
+                <div class="linha">
+
+                    <div class="campo">
+
+                        <label for="paciente">
+                            Nome completo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="paciente"
+                            placeholder="Digite o nome do paciente"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="prontuario">
+                            Nº do prontuário
+                        </label>
+
+                        <input
+                            type="text"
+                            id="prontuario"
+                            placeholder="Digite o número"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 MÉDICO
+            ========================= -->
+
+            <section class="secao">
+
+                <div class="titulo-secao">
+
+                    <span class="numero">2</span>
+
+                    MÉDICO RESPONSÁVEL
+
+                </div>
+
+
+                <div class="linha">
+
+                    <div class="campo">
+
+                        <label for="medico">
+                            Nome do médico
+                        </label>
+
+                        <input
+                            type="text"
+                            id="medico"
+                            placeholder="Nome completo"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="crm">
+                            CRM
+                        </label>
+
+                        <input
+                            type="text"
+                            id="crm"
+                            placeholder="Número do CRM"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="dataAlta">
+                        Data da alta
+                    </label>
+
+                    <input
+                        type="date"
+                        id="dataAlta"
+                        required
+                    >
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 MOTIVO
+            ========================= -->
+
+            <section class="secao">
+
+                <div class="titulo-secao">
+
+                    <span class="numero">3</span>
+
+                    MOTIVO DA ALTA
+
+                </div>
+
+
+                <div class="motivo-box">
+
+                    <div class="campo">
+
+                        <label for="motivo">
+                            Selecione o motivo
+                        </label>
+
+                        <select
+                            id="motivo"
+                            required
+                        >
+
+                            <option value="">
+                                Selecione uma opção
+                            </option>
+
+                            <option value="Melhora clínica">
+                                Melhora clínica
+                            </option>
+
+                            <option value="Tratamento concluído">
+                                Tratamento concluído
+                            </option>
+
+                            <option value="Estabilização do quadro clínico">
+                                Estabilização do quadro clínico
+                            </option>
+
+                            <option value="Alta a pedido do paciente">
+                                Alta a pedido do paciente
+                            </option>
+
+                            <option value="Encaminhamento para outro serviço">
+                                Encaminhamento para outro serviço
+                            </option>
+
+                            <option value="Transferência para outra unidade">
+                                Transferência para outra unidade
+                            </option>
+
+                            <option value="Saída sem autorização / evasão">
+                                Saída sem autorização / evasão
+                            </option>
+
+                            <option value="Outro motivo">
+                                Outro motivo
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 ORIENTAÇÕES
+            ========================= -->
+
+            <section class="secao">
+
+                <div class="titulo-secao">
+
+                    <span class="numero">4</span>
+
+                    OBSERVAÇÕES E ORIENTAÇÕES
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="observacoes">
+                        Informações da alta
+                    </label>
+
+                    <textarea
+                        id="observacoes"
+                        placeholder="Digite as orientações, recomendações ou observações necessárias..."
+                    ></textarea>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 ASSINATURA
+            ========================= -->
+
+            <section class="secao">
+
+                <div class="titulo-secao">
+
+                    <span class="numero">5</span>
+
+                    ASSINATURA DO MÉDICO
+
+                </div>
+
+
+                <div class="assinatura-area">
+
+                    <canvas id="assinatura"></canvas>
+
+                    <p class="assinatura-info">
+
+                        Assine utilizando o mouse, touchpad ou tela
+                        sensível ao toque.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 AÇÕES
+            ========================= -->
+
+            <div class="acoes">
+
+                <button
+                    type="button"
+                    class="btn-limpar"
+                    id="limparAssinatura"
+                >
+                    Limpar assinatura
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn-registrar"
+                >
+                    Registrar alta
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn-pdf"
+                    id="gerarPDF"
+                >
+                    Gerar PDF
+                </button>
+
+            </div>
+
+
+            <div id="status">
+
+                ✓ Alta registrada com sucesso.
+                Agora você pode gerar o documento em PDF.
+
+            </div>
+
+
+        </form>
+
+
+        <footer class="rodape">
+
+            Documento de alta médica — Sistema de atendimento
+
+        </footer>
+
+    </main>
+
+
+    <script>
+
+        /* ==========================================
+           DATA ATUAL
+        ========================================== */
+
+        const dataInput = document.getElementById("dataAlta");
+
+        const hoje = new Date();
+
+        const ano = hoje.getFullYear();
+
+        const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+
+        const dia = String(hoje.getDate()).padStart(2, "0");
+
+        dataInput.value = `${ano}-${mes}-${dia}`;
+
+
+        /* ==========================================
+           ASSINATURA
+        ========================================== */
+
+        const canvas = document.getElementById("assinatura");
+
+        const ctx = canvas.getContext("2d");
+
+        let desenhando = false;
+
+
+        function configurarCanvas() {
+
+            const rect = canvas.getBoundingClientRect();
+
+            const imagem = canvas.toDataURL();
+
+            canvas.width = rect.width;
+
+            canvas.height = rect.height;
+
+            ctx.lineWidth = 2;
+
+            ctx.lineCap = "round";
+
+            ctx.lineJoin = "round";
+
+            ctx.strokeStyle = "#111827";
+        }
+
+
+        configurarCanvas();
+
+
+        window.addEventListener(
+            "resize",
+            configurarCanvas
+        );
+
+
+        function posicao(event) {
+
+            const rect = canvas.getBoundingClientRect();
+
+            return {
+
+                x: event.clientX - rect.left,
+
+                y: event.clientY - rect.top
+
+            };
+
+        }
+
+
+        canvas.addEventListener(
+            "pointerdown",
+            function(event) {
+
+                desenhando = true;
+
+                canvas.setPointerCapture(event.pointerId);
+
+                const pos = posicao(event);
+
+                ctx.beginPath();
+
+                ctx.moveTo(pos.x, pos.y);
+
+            }
+        );
+
+
+        canvas.addEventListener(
+            "pointermove",
+            function(event) {
+
+                if (!desenhando) return;
+
+                const pos = posicao(event);
+
+                ctx.lineTo(pos.x, pos.y);
+
+                ctx.stroke();
+
+            }
+        );
+
+
+        canvas.addEventListener(
+            "pointerup",
+            finalizarDesenho
+        );
+
+
+        canvas.addEventListener(
+            "pointercancel",
+            finalizarDesenho
+        );
+
+
+        function finalizarDesenho() {
+
+            desenhando = false;
+
+            ctx.closePath();
+
+        }
+
+
+        /* ==========================================
+           LIMPAR ASSINATURA
+        ========================================== */
+
+        document
+            .getElementById("limparAssinatura")
+            .addEventListener(
+                "click",
+                function() {
+
+                    ctx.clearRect(
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+                    );
+
+                }
+            );
+
+
+        /* ==========================================
+           REGISTRAR ALTA
+        ========================================== */
+
+        let altaRegistrada = false;
+
+
+        document
+            .getElementById("formAlta")
+            .addEventListener(
+                "submit",
+                function(event) {
+
+                    event.preventDefault();
+
+
+                    const assinatura = canvas.toDataURL(
+                        "image/png"
+                    );
+
+
+                    const dados = {
+
+                        paciente:
+                            document
+                                .getElementById("paciente")
+                                .value,
+
+                        prontuario:
+                            document
+                                .getElementById("prontuario")
+                                .value,
+
+                        medico:
+                            document
+                                .getElementById("medico")
+                                .value,
+
+                        crm:
+                            document
+                                .getElementById("crm")
+                                .value,
+
+                        dataAlta:
+                            document
+                                .getElementById("dataAlta")
+                                .value,
+
+                        motivo:
+                            document
+                                .getElementById("motivo")
+                                .value,
+
+                        observacoes:
+                            document
+                                .getElementById("observacoes")
+                                .value,
+
+                        assinatura:
+                            assinatura
+
+                    };
+
+
+                    /*
+                     * Aqui futuramente você pode
+                     * enviar os dados para o backend.
+                     *
+                     * fetch("/api/alta", {
+                     *     method: "POST",
+                     *     headers: {
+                     *         "Content-Type":
+                     *             "application/json"
+                     *     },
+                     *     body: JSON.stringify(dados)
+                     * });
+                     */
+
+
+                    console.log(
+                        "Dados da alta:",
+                        dados
+                    );
+
+
+                    altaRegistrada = true;
+
+
+                    document
+                        .getElementById("status")
+                        .style.display = "block";
+
+
+                    document
+                        .getElementById("gerarPDF")
+                        .style.display = "block";
+
+                }
+            );
+
+
+        /* ==========================================
+           GERAR PDF
+        ========================================== */
+
+        document
+            .getElementById("gerarPDF")
+            .addEventListener(
+                "click",
+                gerarPDF
+            );
+
+
+        function gerarPDF() {
+
+            if (!altaRegistrada) {
+
+                alert(
+                    "Registre a alta antes de gerar o PDF."
+                );
+
+                return;
+
+            }
+
+
+            const {
+                jsPDF
+            } = window.jspdf;
+
+
+            const pdf = new jsPDF({
+
+                orientation: "portrait",
+
+                unit: "mm",
+
+                format: "a4"
+
+            });
+
+
+            /* ======================================
+               CORES
+            ====================================== */
+
+            const azul = [29, 78, 216];
+
+            const cinza = [100, 116, 139];
+
+            const preto = [31, 41, 55];
+
+            const cinzaClaro = [241, 245, 249];
+
+
+            /* ======================================
+               DADOS
+            ====================================== */
+
+            const paciente =
+                document
+                    .getElementById("paciente")
+                    .value;
+
+            const prontuario =
+                document
+                    .getElementById("prontuario")
+                    .value;
+
+            const medico =
+                document
+                    .getElementById("medico")
+                    .value;
+
+            const crm =
+                document
+                    .getElementById("crm")
+                    .value;
+
+            const data =
+                document
+                    .getElementById("dataAlta")
+                    .value;
+
+            const motivo =
+                document
+                    .getElementById("motivo")
+                    .value;
+
+            const observacoes =
+                document
+                    .getElementById("observacoes")
+                    .value;
+
+
+            /* ======================================
+               CONVERTER DATA
+            ====================================== */
+
+            const partesData = data.split("-");
+
+            const dataFormatada =
+                `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
+
+
+            /* ======================================
+               BORDA DA FOLHA
+            ====================================== */
+
+            pdf.setDrawColor(
+                220,
+                226,
+                232
+            );
+
+            pdf.setLineWidth(0.3);
+
+            pdf.rect(
+                10,
+                10,
+                190,
+                277
+            );
+
+
+            /* ======================================
+               CABEÇALHO
+            ====================================== */
+
+            pdf.setTextColor(
+                ...azul
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(19);
+
+            pdf.text(
+                "ALTA MÉDICA",
+                20,
+                25
+            );
+
+
+            pdf.setTextColor(
+                ...cinza
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(8.5);
+
+            pdf.text(
+                "Documento de alta e encerramento do atendimento",
+                20,
+                31
+            );
+
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(8);
+
+            pdf.setTextColor(
+                ...preto
+            );
+
+            pdf.text(
+                "DOCUMENTO MÉDICO",
+                190,
+                24,
+                {
+                    align: "right"
+                }
+            );
+
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setTextColor(
+                ...cinza
+            );
+
+            pdf.text(
+                "Registro de alta",
+                190,
+                29,
+                {
+                    align: "right"
+                }
+            );
+
+
+            /* Linha */
+            pdf.setDrawColor(
+                ...azul
+            );
+
+            pdf.setLineWidth(0.8);
+
+            pdf.line(
+                20,
+                37,
+                190,
+                37
+            );
+
+
+            /* ======================================
+               FUNÇÃO DE TÍTULO
+            ====================================== */
+
+            function tituloSecao(
+                numero,
+                texto,
+                y
+            ) {
+
+                pdf.setFillColor(
+                    ...azul
+                );
+
+                pdf.circle(
+                    24,
+                    y - 1,
+                    3.5,
+                    "F"
+                );
+
+
+                pdf.setTextColor(
+                    255,
+                    255,
+                    255
+                );
+
+                pdf.setFont(
+                    "helvetica",
+                    "bold"
+                );
+
+                pdf.setFontSize(7);
+
+                pdf.text(
+                    String(numero),
+                    24,
+                    y + 1.5,
+                    {
+                        align: "center"
+                    }
+                );
+
+
+                pdf.setTextColor(
+                    ...azul
+                );
+
+                pdf.setFontSize(10);
+
+                pdf.text(
+                    texto,
+                    31,
+                    y + 1
+                );
+
+
+                pdf.setDrawColor(
+                    220,
+                    226,
+                    232
+                );
+
+                pdf.setLineWidth(0.3);
+
+                pdf.line(
+                    20,
+                    y + 6,
+                    190,
+                    y + 6
+                );
+
+            }
+
+
+            /* ======================================
+               DADOS DO PACIENTE
+            ====================================== */
+
+            tituloSecao(
+                1,
+                "DADOS DO PACIENTE",
+                49
+            );
+
+
+            pdf.setTextColor(
+                ...cinza
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(7.5);
+
+            pdf.text(
+                "NOME COMPLETO",
+                20,
+                65
+            );
+
+            pdf.text(
+                "Nº DO PRONTUÁRIO",
+                135,
+                65
+            );
+
+
+            pdf.setTextColor(
+                ...preto
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(10);
+
+            pdf.text(
+                paciente,
+                20,
+                71
+            );
+
+            pdf.text(
+                prontuario,
+                135,
+                71
+            );
+
+
+            /* ======================================
+               MÉDICO
+            ====================================== */
+
+            tituloSecao(
+                2,
+                "MÉDICO RESPONSÁVEL",
+                84
+            );
+
+
+            pdf.setTextColor(
+                ...cinza
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(7.5);
+
+            pdf.text(
+                "MÉDICO",
+                20,
+                100
+            );
+
+            pdf.text(
+                "CRM",
+                115,
+                100
+            );
+
+            pdf.text(
+                "DATA DA ALTA",
+                150,
+                100
+            );
+
+
+            pdf.setTextColor(
+                ...preto
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(10);
+
+            pdf.text(
+                medico,
+                20,
+                106
+            );
+
+            pdf.text(
+                crm,
+                115,
+                106
+            );
+
+            pdf.text(
+                dataFormatada,
+                150,
+                106
+            );
+
+
+            /* ======================================
+               MOTIVO
+            ====================================== */
+
+            tituloSecao(
+                3,
+                "MOTIVO DA ALTA",
+                119
+            );
+
+
+            pdf.setFillColor(
+                ...cinzaClaro
+            );
+
+            pdf.roundedRect(
+                20,
+                127,
+                170,
+                20,
+                2,
+                2,
+                "F"
+            );
+
+
+            pdf.setTextColor(
+                ...cinza
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(7.5);
+
+            pdf.text(
+                "MOTIVO SELECIONADO",
+                26,
+                135
+            );
+
+
+            pdf.setTextColor(
+                ...preto
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(10);
+
+            pdf.text(
+                motivo,
+                26,
+                142
+            );
+
+
+            /* ======================================
+               OBSERVAÇÕES
+            ====================================== */
+
+            tituloSecao(
+                4,
+                "OBSERVAÇÕES E ORIENTAÇÕES",
+                159
+            );
+
+
+            pdf.setTextColor(
+                ...preto
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(9);
+
+
+            const textoObservacoes =
+                observacoes ||
+                "Nenhuma observação ou orientação adicional registrada.";
+
+
+            const linhas =
+                pdf.splitTextToSize(
+                    textoObservacoes,
+                    165
+                );
+
+
+            pdf.text(
+                linhas,
+                20,
+                170
+            );
+
+
+            /* ======================================
+               ASSINATURA
+            ====================================== */
+
+            tituloSecao(
+                5,
+                "ASSINATURA DO MÉDICO",
+                205
+            );
+
+
+            /*
+             * Adiciona a assinatura do canvas
+             */
+
+            const assinatura =
+                canvas.toDataURL(
+                    "image/png"
+                );
+
+
+            pdf.addImage(
+                assinatura,
+                "PNG",
+                30,
+                215,
+                70,
+                35
+            );
+
+
+            /* Linha da assinatura */
+
+            pdf.setDrawColor(
+                ...preto
+            );
+
+            pdf.setLineWidth(0.3);
+
+            pdf.line(
+                30,
+                250,
+                100,
+                250
+            );
+
+
+            pdf.setTextColor(
+                ...preto
+            );
+
+            pdf.setFont(
+                "helvetica",
+                "bold"
+            );
+
+            pdf.setFontSize(8.5);
+
+            pdf.text(
+                medico,
+                65,
+                256,
+                {
+                    align: "center"
+                }
+            );
+
+
+            pdf.setFont(
+                "helvetica",
+                "normal"
+            );
+
+            pdf.setFontSize(8);
+
+            pdf.setTextColor(
+                ...cinza
+            );
+
+            pdf.text(
+                `CRM ${crm}`,
+                65,
+                261,
+                {
+                    align: "center"
+                }
+            );
+
+
+            /* ======================================
+               DATA / RODAPÉ
+            ====================================== */
+
+            pdf.setDrawColor(
+                220,
+                226,
+                232
+            );
+
+            pdf.line(
+                20,
+                273,
+                190,
+                273
+            );
+
+
+            pdf.setTextColor(
+                ...cinza
+            );
+
+            pdf.setFontSize(7);
+
+            pdf.text(
+                "Documento de alta médica",
+                20,
+                280
+            );
+
+
+            pdf.text(
+                `Data: ${dataFormatada}`,
+                190,
+                280,
+                {
+                    align: "right"
+                }
+            );
+
+
+            /* ======================================
+               NOME DO ARQUIVO
+            ====================================== */
+
+            const nomeArquivo =
+                paciente
+                    .trim()
+                    .replace(
+                        /[^a-zA-Z0-9À-ÿ ]/g,
+                        ""
+                    )
+                    .replace(
+                        /\s+/g,
+                        "-"
+                    )
+                    .toLowerCase();
+
+
+            pdf.save(
+                `alta-${nomeArquivo || "paciente"}.pdf`
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+
