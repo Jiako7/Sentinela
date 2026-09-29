@@ -30,6 +30,10 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/registrar-alta",
+      "destination": "/api/index.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/frontend/$1"
     }
