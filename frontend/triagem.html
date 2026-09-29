@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Triagem - Sistema Hospitalar</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 
 <style>
   * {
@@ -463,11 +463,45 @@
   .btn-salvar{border-radius:12px;background:linear-gradient(135deg,#159467,#0f766e);box-shadow:0 9px 20px rgba(15,118,110,.16)}
   .status-label{background:#eaf5fb;color:#1d679f;border:1px solid #cce7f2}
 
+    
+        /* Sentinela restyle v3 */
+
+  .container{max-width:1160px}
+  .page-header{
+    min-height:132px;
+    padding:28px 30px;
+    border-radius:24px;
+    background:linear-gradient(135deg,#fff 0%,#f3f9fc 100%);
+    box-shadow:0 22px 58px rgba(16,45,70,.10)
+  }
+  .page-header::before{
+    content:"";position:absolute;width:230px;height:230px;border-radius:50%;
+    right:-80px;top:-120px;background:rgba(85,183,217,.10)
+  }
+  .header-title,.btn-abrir-tv{position:relative;z-index:1}
+  .header-icon{width:60px;height:60px;border-radius:18px;font-size:28px}
+  .header-title h1{font-size:27px;letter-spacing:-.04em}
+  .card{border-radius:21px;padding:27px;box-shadow:0 14px 38px rgba(16,45,70,.07)}
+  .card-header{padding-bottom:14px;border-bottom:1px solid #edf2f5}
+  .status-label{padding:8px 12px}
+  .fila-item{padding:16px 18px;border-radius:15px}
+  .btn-tv,.btn-atualizar,.btn-salvar,.btn-abrir-tv{min-height:43px}
+  .form-grid{gap:18px}
+  .form-group label{font-size:12px;color:#27455d}
+  input,select,textarea{min-height:47px}
+  textarea{min-height:120px}
+  #resultado{border-radius:13px;padding:16px}
+
     </style>
 
 </head>
 
 <body>
+  <nav class="sn-topbar">
+    <a class="sn-back" href="index.html">← Voltar para o login</a>
+    <div class="sn-page-label"><span class="sn-page-dot"></span>Triagem • Classificação</div>
+  </nav>
+
 
 <div class="container">
 
