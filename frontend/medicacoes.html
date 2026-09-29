@@ -42,6 +42,23 @@
     #listaMedicacoes .card{border-radius:18px;padding:22px 21px;transition:.18s ease}
     #listaMedicacoes .card:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(16,45,70,.10)}
 
+    
+        /* Sentinela redesign v4 */
+
+    .sn-topbar{max-width:1180px!important;background:#0b2741!important;border:0!important}
+    .sn-back{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.12)!important;color:#fff!important}
+    .sn-page-label{color:#c6d9e5!important}
+    .hero{border-radius:28px!important;min-height:165px!important}
+    .list-panel{border-radius:24px!important}
+    #listaMedicacoes{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+    #listaMedicacoes .card{
+      border-radius:18px!important;background:#f8fbfd!important;border:1px solid #dfe9ef!important;
+      box-shadow:none!important
+    }
+    #listaMedicacoes .card:hover{background:#fff!important}
+    @media(max-width:1000px){#listaMedicacoes{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+    @media(max-width:680px){#listaMedicacoes{grid-template-columns:1fr!important}}
+
     </style>
 </head>
 <body>
