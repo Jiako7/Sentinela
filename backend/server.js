@@ -19,6 +19,7 @@ function readDB() {
       pacientes: [],
       triagens: [],
       consultas: [],
+      altas: [],
       tv_chamada: null,
       tv_historico: []
     };
@@ -26,6 +27,7 @@ function readDB() {
   const db = JSON.parse(fs.readFileSync(DB_FILE));
   if (!db.tv_chamada) db.tv_chamada = null;
   if (!db.tv_historico) db.tv_historico = [];
+  if (!db.altas) db.altas = [];
   return db;
 }
 
@@ -178,6 +180,17 @@ app.post("/consulta", (req, res) => {
   writeDB(db);
 
   res.json(consulta);
+});
+
+// ALTA MÉDICA
+app.post("/registrar-alta", (req, res) => {
+  const db = readDB();
+  const alta = { id: Date.now(), paciente: req.body.paciente, prontuario: req.body.prontuario, medico: req.body.medico, crm: req.body.crm, dataAlta: req.body.dataAlta, motivo: req.body.motivo, observacoes: req.body.observacoes || "", createdAt: new Date() };
+  db.altas.push(alta);
+  db.triagens = (db.triagens || []).filter(t => !((req.body.prontuario && (t.prontuario == req.body.prontuario || t.numero_prontuario == req.body.prontuario)) || (req.body.paciente && t.nome === req.body.paciente)));
+  (db.pacientes || []).forEach(p => { if (p.nome === req.body.paciente) p.status = "alta"; });
+  writeDB(db);
+  res.json({ sucesso: true, alta });
 });
 
 // MEDICAÇÕES
