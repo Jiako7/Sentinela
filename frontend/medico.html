@@ -450,6 +450,20 @@
                 flex-wrap: wrap;
             }
         }
+    
+        /* Refinamento visual Sentinela */
+        :root{--sentinela-azul:#123b68;--sentinela-azul-vivo:#2563eb;--sentinela-verde:#0f766e;--sentinela-fundo:#f4f7fb;--sentinela-borda:#dce6f1}
+        body{background:radial-gradient(circle at top right,rgba(37,99,235,.08),transparent 30%),var(--sentinela-fundo)}
+        .cabecalho{border:1px solid var(--sentinela-borda);border-bottom:0;position:relative;overflow:hidden;box-shadow:0 14px 35px rgba(15,23,42,.08)}
+        .cabecalho::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:linear-gradient(90deg,var(--sentinela-azul-vivo),#38bdf8,var(--sentinela-verde))}
+        .card-painel,.consultorio{border:1px solid var(--sentinela-borda);box-shadow:0 12px 30px rgba(15,23,42,.06)}
+        .paciente-card{background:#fff;border-color:var(--sentinela-borda)}
+        .paciente-card:hover{transform:translateY(-1px);box-shadow:0 10px 25px rgba(37,99,235,.10)}
+        .btn-tv,.btn-alta,.btn-atender,.btn-chamar,.btn-salvar,.btn-alta-paciente{min-height:42px;border-radius:10px;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+        .btn-tv:hover,.btn-alta:hover,.btn-atender:hover,.btn-chamar:hover,.btn-salvar:hover,.btn-alta-paciente:hover{transform:translateY(-1px)}
+        .btn-alta-paciente{border:1px solid #99f6e4;background:#f0fdfa;color:#115e59;padding:9px 13px;cursor:pointer;font-weight:800;font-size:13px}
+        .btn-alta-paciente:hover{background:#ccfbf1;box-shadow:0 6px 18px rgba(15,118,110,.12)}
+        @media(max-width:600px){.acoes-paciente{display:grid;grid-template-columns:1fr 1fr}.btn-alta-paciente{grid-column:1/-1}}
     </style>
 </head>
 
@@ -724,6 +738,14 @@
     }
 
 
+    function abrirAlta(paciente) {
+        const params = new URLSearchParams();
+        if (paciente?.nome) params.set("paciente", paciente.nome);
+        const prontuario = obterProntuario(paciente);
+        if (prontuario) params.set("prontuario", prontuario);
+        window.location.href = "alta.html" + (params.toString() ? "?" + params.toString() : "");
+    }
+
     /* =========================================
        CARREGAR TRIAGENS
     ========================================= */
@@ -889,6 +911,8 @@
                             📺 Chamar na TV
 
                         </button>
+
+                        <button class="btn-alta-paciente" onclick="abrirAlta(triagensCarregadas[${index}])">✓ Dar alta</button>
 
                     </div>
 
