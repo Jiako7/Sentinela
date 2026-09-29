@@ -1,72 +1,149 @@
+:root{
+  --bg:#eef4f8;
+  --surface:#ffffff;
+  --surface-soft:#f7fafc;
+  --navy:#0b2741;
+  --navy-2:#123f66;
+  --blue:#2476b8;
+  --blue-2:#2f8fd1;
+  --cyan:#55b7d9;
+  --teal:#0f766e;
+  --green:#159467;
+  --danger:#c94b4b;
+  --warning:#c18a19;
+  --text:#142536;
+  --muted:#6b7f91;
+  --line:#dbe6ee;
+  --shadow:0 18px 50px rgba(16,45,70,.10);
+  --shadow-soft:0 8px 24px rgba(16,45,70,.07);
+  --radius:18px;
+}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
 body{
-  font-family: Arial;
-  background:#f4f6f9;
   margin:0;
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 12% 0%,rgba(85,183,217,.15),transparent 28rem),
+    linear-gradient(180deg,#f7fbfd 0%,var(--bg) 100%);
+  color:var(--text);
+  min-height:100vh;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0 0 auto 0;
+  height:4px;
+  background:linear-gradient(90deg,var(--navy),var(--blue-2),var(--cyan),var(--teal));
+  z-index:9999;
 }
 
 .container{
-  width:90%;
-  max-width:900px;
-  margin:20px auto;
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+  width:min(1120px,calc(100% - 32px));
+  margin:34px auto;
+  background:rgba(255,255,255,.94);
+  padding:28px;
+  border:1px solid rgba(219,230,238,.95);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
 }
 
-input,
-select,
-textarea,
+h1,h2,h3{letter-spacing:-.02em}
+h1,h2{color:var(--navy)}
+h2{margin:0 0 20px;font-size:clamp(1.45rem,2vw,2rem)}
+h3{margin:0 0 10px;color:var(--navy-2)}
+
+input,select,textarea,button{
+  font:inherit;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:13px 14px;
+  margin-top:8px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fbfdfe;
+  color:var(--text);
+  outline:none;
+  transition:border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+
+input:focus,select:focus,textarea:focus{
+  border-color:var(--blue-2);
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(47,143,209,.11);
+}
+
+textarea{min-height:110px;resize:vertical}
+
 button{
   width:100%;
-  padding:12px;
-  margin-top:10px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:16px;
-}
-
-textarea{
-  min-height:100px;
-  resize:none;
-}
-
-button{
-  background:#3498db;
+  padding:13px 16px;
+  margin-top:12px;
+  border-radius:12px;
+  border:0;
+  background:linear-gradient(135deg,var(--blue),var(--blue-2));
   color:white;
-  border:none;
+  font-weight:800;
   cursor:pointer;
+  box-shadow:0 10px 22px rgba(36,118,184,.18);
+  transition:transform .16s ease,box-shadow .16s ease,filter .16s ease;
 }
 
 button:hover{
-  background:#2980b9;
+  transform:translateY(-1px);
+  filter:saturate(1.06);
+  box-shadow:0 13px 28px rgba(36,118,184,.22);
 }
+
+button:active{transform:translateY(0)}
 
 .card{
-  border:1px solid #ddd;
-  padding:15px;
-  margin:15px 0;
-  border-radius:10px;
-  background:white;
-  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+  position:relative;
+  border:1px solid var(--line);
+  padding:19px;
+  margin:14px 0;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,#fbfdfe);
+  box-shadow:var(--shadow-soft);
+  overflow:hidden;
 }
 
-.verde{
-  background:#2ecc71;
-  color:white;
-  padding:5px 10px;
-  border-radius:6px;
+.card::before{
+  content:"";
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:4px;
+  background:linear-gradient(180deg,var(--blue-2),var(--cyan));
 }
 
-.amarelo{
-  background:#f1c40f;
-  padding:5px 10px;
-  border-radius:6px;
+.card p{margin:9px 0;color:#53697c;line-height:1.55}
+.card b{color:var(--navy-2)}
+
+.verde,.amarelo,.vermelho{
+  display:inline-flex;
+  align-items:center;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:.8rem;
+  font-weight:800;
 }
 
-.vermelho{
-  background:#e74c3c;
-  color:white;
-  padding:5px 10px;
-  border-radius:6px;
+.verde{background:#dcfce7;color:#166534}
+.amarelo{background:#fef3c7;color:#92400e}
+.vermelho{background:#fee2e2;color:#991b1b}
+
+@media(max-width:700px){
+  .container{
+    width:min(100% - 20px,1120px);
+    margin:18px auto;
+    padding:18px;
+    border-radius:15px;
+  }
 }
