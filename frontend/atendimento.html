@@ -1,22 +1,69 @@
 <!DOCTYPE html>
-<html>
-<head><link rel="stylesheet" href="style.css"></head>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atendimento - Sentinela</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .page-shell{width:min(1040px,calc(100% - 28px));margin:34px auto}
+    .hero{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:26px 28px;background:linear-gradient(135deg,#0b2741,#174f78);color:white;border-radius:22px;box-shadow:0 22px 55px rgba(11,39,65,.18);margin-bottom:20px;position:relative;overflow:hidden}
+    .hero::after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:rgba(85,183,217,.16);right:-80px;top:-110px}
+    .hero-brand{display:flex;align-items:center;gap:15px;position:relative;z-index:1}
+    .hero-logo{width:58px;height:58px;border-radius:16px;background:white;padding:7px;object-fit:contain}
+    .hero h1{margin:0;color:white;font-size:28px}
+    .hero p{margin:5px 0 0;color:#cfe3ef;font-size:14px}
+    .badge{position:relative;z-index:1;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);font-weight:700;font-size:12px}
+    .workspace{display:grid;grid-template-columns:.78fr 1.22fr;gap:20px}
+    .info-panel,.form-panel{background:white;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-soft);padding:24px}
+    .info-panel{background:linear-gradient(180deg,#f9fcfe,#f2f8fb)}
+    .info-panel h2,.form-panel h2{margin:0 0 8px;font-size:20px}
+    .info-panel p,.form-panel>p{margin:0;color:var(--muted);line-height:1.55;font-size:14px}
+    .steps{display:grid;gap:12px;margin-top:24px}
+    .step{display:flex;gap:12px;align-items:flex-start;padding:13px;border-radius:14px;background:white;border:1px solid var(--line)}
+    .step-number{width:30px;height:30px;flex:0 0 30px;border-radius:10px;display:grid;place-items:center;background:#eaf5fb;color:var(--blue);font-weight:900}
+    .step strong{display:block;color:var(--navy);font-size:14px}.step span{display:block;margin-top:3px;color:var(--muted);font-size:12px;line-height:1.4}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:22px}
+    .field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:800;color:var(--navy-2);text-transform:uppercase;letter-spacing:.04em}
+    .file-box{border:1px dashed #a9becd;border-radius:14px;padding:16px;background:#f9fcfe}
+    .primary{margin-top:18px}
+    @media(max-width:780px){.workspace{grid-template-columns:1fr}.hero{align-items:flex-start}.badge{display:none}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.page-shell{margin:18px auto}}
+  </style>
+</head>
 <body>
-<div class="container">
-<h2>Atendimento</h2>
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero-brand">
+        <img class="hero-logo" src="logo-sh.png" alt="Sentinela">
+        <div><h1>Atendimento</h1><p>Recepção e cadastro inicial de pacientes</p></div>
+      </div>
+      <span class="badge">SENTINELA • RECEPÇÃO</span>
+    </section>
 
-<input id="nome" placeholder="Nome">
-<input id="cpf" placeholder="CPF">
+    <section class="workspace">
+      <aside class="info-panel">
+        <h2>Novo atendimento</h2>
+        <p>Cadastre os dados essenciais para encaminhar o paciente à triagem.</p>
+        <div class="steps">
+          <div class="step"><span class="step-number">1</span><div><strong>Identificação</strong><span>Informe nome e CPF do paciente.</span></div></div>
+          <div class="step"><span class="step-number">2</span><div><strong>Modalidade</strong><span>Selecione convênio ou atendimento particular.</span></div></div>
+          <div class="step"><span class="step-number">3</span><div><strong>Encaminhamento</strong><span>Finalize o cadastro para liberar a triagem.</span></div></div>
+        </div>
+      </aside>
 
-<select id="tipo">
-  <option>Convenio</option>
-  <option>Particular</option>
-</select>
-
-<input type="file" id="foto">
-
-<button onclick="cadastrar()">Cadastrar</button>
-</div>
+      <section class="form-panel">
+        <h2>Dados do paciente</h2>
+        <p>Preencha as informações abaixo para iniciar o atendimento.</p>
+        <div class="form-grid">
+          <div class="field full"><label for="nome">Nome completo</label><input id="nome" placeholder="Nome do paciente"></div>
+          <div class="field"><label for="cpf">CPF</label><input id="cpf" placeholder="000.000.000-00"></div>
+          <div class="field"><label for="tipo">Tipo de atendimento</label><select id="tipo"><option>Convenio</option><option>Particular</option></select></div>
+          <div class="field full"><label for="foto">Documento / foto</label><div class="file-box"><input type="file" id="foto"></div></div>
+        </div>
+        <button class="primary" onclick="cadastrar()">Cadastrar e enviar para triagem</button>
+      </section>
+    </section>
+  </main>
 
 <script>
 function cadastrar(){
