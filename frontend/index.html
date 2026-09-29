@@ -233,6 +233,81 @@
                 font-size: 22px;
             }
         }
+    
+        /* ===== Sentinela Design System v2 ===== */
+        :root{
+            --sn-bg:#eef4f8;
+            --sn-surface:#fff;
+            --sn-navy:#0b2741;
+            --sn-navy2:#123f66;
+            --sn-blue:#2476b8;
+            --sn-blue2:#2f8fd1;
+            --sn-cyan:#55b7d9;
+            --sn-teal:#0f766e;
+            --sn-text:#142536;
+            --sn-muted:#6b7f91;
+            --sn-line:#dbe6ee;
+            --sn-shadow:0 18px 50px rgba(16,45,70,.10);
+            --sn-shadow-soft:0 8px 24px rgba(16,45,70,.07);
+        }
+        body{
+            font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+            background:radial-gradient(circle at 12% 0%,rgba(85,183,217,.14),transparent 28rem),linear-gradient(180deg,#f8fbfd,var(--sn-bg));
+            color:var(--sn-text);
+        }
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0 0 auto 0;
+            height:4px;
+            background:linear-gradient(90deg,var(--sn-navy),var(--sn-blue2),var(--sn-cyan),var(--sn-teal));
+            z-index:9999;
+        }
+        input,select,textarea,button{font-family:inherit}
+
+        .container{
+            max-width:450px;
+            padding:42px 38px 34px;
+            border-radius:22px;
+            border:1px solid rgba(219,230,238,.95);
+            border-top:1px solid rgba(219,230,238,.95);
+            box-shadow:0 26px 70px rgba(11,39,65,.14);
+            position:relative;
+            overflow:hidden;
+        }
+        .container::before{
+            content:"";
+            position:absolute;
+            top:0;left:0;right:0;
+            height:6px;
+            background:linear-gradient(90deg,var(--sn-navy),var(--sn-blue2),var(--sn-cyan));
+        }
+        .icone{
+            width:76px;height:76px;
+            background:linear-gradient(145deg,#edf8fd,#dff2fa);
+            border:1px solid #cce7f2;
+            box-shadow:0 12px 30px rgba(47,143,209,.13);
+        }
+        .icone img{width:56px;height:56px;object-fit:contain}
+        h1{color:var(--sn-navy);font-size:27px;letter-spacing:-.03em}
+        .subtitulo{font-size:14px;color:var(--sn-muted)}
+        .campo label{color:var(--sn-navy2);font-weight:750}
+        .campo input{
+            min-height:48px;
+            border-radius:12px;
+            border-color:var(--sn-line);
+            background:#fbfdfe;
+        }
+        .campo input:focus{border-color:var(--sn-blue2);box-shadow:0 0 0 4px rgba(47,143,209,.11);background:#fff}
+        .btn-entrar{
+            min-height:49px;
+            border-radius:12px;
+            background:linear-gradient(135deg,var(--sn-blue),var(--sn-blue2));
+            box-shadow:0 12px 24px rgba(36,118,184,.20);
+        }
+        .btn-entrar:hover{background:linear-gradient(135deg,#1d679f,#247fba);transform:translateY(-1px)}
+        .rodape{color:#8699a8;border-top-color:var(--sn-line)}
+
     </style>
 </head>
 
@@ -243,7 +318,7 @@
         <div class="cabecalho">
 
             <div class="icone">
-                🏥
+                <img src="logo-sh.png" alt="Sentinela">
             </div>
 
             <h1>Sistema Hospitalar</h1>
