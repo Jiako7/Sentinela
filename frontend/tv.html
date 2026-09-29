@@ -566,12 +566,59 @@
         .logo-box{background:linear-gradient(135deg,#fff,#edf8fd)}
         .logo-text{font-size:2.2vw!important}
 
+    
+        /* Sentinela TV back v3 */
+        .tv-back{
+            position:fixed;
+            top:14px;
+            left:18px;
+            z-index:100;
+            display:inline-flex;
+            align-items:center;
+            text-decoration:none;
+            color:#dff3ff;
+            background:rgba(6,28,46,.58);
+            border:1px solid rgba(255,255,255,.16);
+            border-radius:999px;
+            padding:9px 13px;
+            font-size:12px;
+            font-weight:800;
+            letter-spacing:.02em;
+            backdrop-filter:blur(10px);
+            transition:.18s ease;
+        }
+        .tv-back:hover{
+            background:rgba(255,255,255,.12);
+            transform:translateY(-1px);
+        }
+        .tv-container{
+            padding-top:18px;
+        }
+    
+        /* Sentinela restyle v3 */
+
+        .tv-container{gap:22px!important}
+        .box{
+            border-radius:26px!important;
+            box-shadow:0 28px 70px rgba(0,0,0,.25)!important
+        }
+        .patient-box{
+            background:
+                radial-gradient(circle at 88% 18%,rgba(85,183,217,.10),transparent 25rem),
+                linear-gradient(180deg,#fff,#f5fbfe)!important
+        }
+        .patient-name{font-weight:900!important}
+        .local-number{font-weight:900!important}
+        .history-box{background:linear-gradient(180deg,#fff,#f7fbfd)!important}
+        .logo-box{border-top:1px solid rgba(85,183,217,.18)!important}
+
     </style>
 
 </head>
 
 
 <body>
+    <a class="tv-back" href="javascript:history.back()">← Voltar</a>
 
 
     <!-- =========================================
