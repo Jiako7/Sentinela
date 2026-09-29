@@ -513,6 +513,59 @@
         }
 
 
+    
+        /* ===== Sentinela Design System v2 ===== */
+        :root{
+            --sn-bg:#eef4f8;
+            --sn-surface:#fff;
+            --sn-navy:#0b2741;
+            --sn-navy2:#123f66;
+            --sn-blue:#2476b8;
+            --sn-blue2:#2f8fd1;
+            --sn-cyan:#55b7d9;
+            --sn-teal:#0f766e;
+            --sn-text:#142536;
+            --sn-muted:#6b7f91;
+            --sn-line:#dbe6ee;
+            --sn-shadow:0 18px 50px rgba(16,45,70,.10);
+            --sn-shadow-soft:0 8px 24px rgba(16,45,70,.07);
+        }
+        body{
+            font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+            background:radial-gradient(circle at 12% 0%,rgba(85,183,217,.14),transparent 28rem),linear-gradient(180deg,#f8fbfd,var(--sn-bg));
+            color:var(--sn-text);
+        }
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0 0 auto 0;
+            height:4px;
+            background:linear-gradient(90deg,var(--sn-navy),var(--sn-blue2),var(--sn-cyan),var(--sn-teal));
+            z-index:9999;
+        }
+        input,select,textarea,button{font-family:inherit}
+
+        body{
+            background:
+                radial-gradient(circle at 78% 15%,rgba(85,183,217,.20),transparent 32rem),
+                linear-gradient(135deg,#071c2e,#0d3656 55%,#115071)!important;
+        }
+        .tv-container{width:95vw;height:92vh;gap:18px}
+        .box{
+            border-radius:24px;
+            border:1px solid rgba(255,255,255,.72);
+            box-shadow:0 24px 55px rgba(0,0,0,.24);
+            background:linear-gradient(180deg,rgba(255,255,255,.99),rgba(245,250,253,.98));
+        }
+        .box::before{height:6px;background:linear-gradient(90deg,var(--sn-blue2),var(--sn-cyan),var(--sn-teal))}
+        .box-title,.local-type,.logo-text{color:var(--sn-navy2)!important}
+        .local-number,.patient-name{color:#1477ad!important;letter-spacing:-.035em}
+        .history-box{padding:27px!important}
+        #history-list li{border-bottom-color:#dce8ef!important;padding:13px 7px!important}
+        .status-indicator{background:#edf8f2;padding:7px 10px;border-radius:999px;color:#47705e!important}
+        .logo-box{background:linear-gradient(135deg,#fff,#edf8fd)}
+        .logo-text{font-size:2.2vw!important}
+
     </style>
 
 </head>
@@ -854,4 +907,3 @@
 </body>
 
 </html>
-```
